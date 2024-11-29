@@ -1,0 +1,80 @@
+---
+description: "pathBased"
+config: |
+  rules:
+    - allOf:
+        - match: production-key
+          paths:
+            - "**/production/"
+        - match: staging-key
+          paths:
+            - "**/staging/"
+        - match: dr-key
+        - anyOf:
+            - not:
+                match: bad-key
+                paths:
+                  - "**/bad/"
+            - not:
+                match: bad-key2
+              paths:
+                - "**/bad2/"
+testCases:
+  - description: "non-production and non-staging only requires dr-key"
+    trustAnchors: ["dr-key", "production-key", "staging-key"]
+    filePath: secret.yaml
+    expectSuccess: true
+    expectedOutput: |
+      Unmatched trust anchors:
+        - production-key
+        - staging-key
+  - description: "production requires dr-key and production-key"
+    trustAnchors: ["dr-key", "production-key", "staging-key"]
+    filePath: config/production/secret.yaml
+    expectSuccess: true
+    expectedOutput: |
+      Unmatched trust anchors:
+        - staging-key
+  - description: "staging requires dr-key and staging-key"
+    trustAnchors: ["dr-key", "production-key", "staging-key"]
+    filePath: config/staging/secret.yaml
+    expectSuccess: true
+    expectedOutput: |
+      Unmatched trust anchors:
+        - production-key
+  - description: "bad-key not allowed here"
+    trustAnchors: ["dr-key", "production-key", "bad-key"]
+    filePath: config/production/bad/secret.yaml
+    expectSuccess: false
+    expectedOutput: |
+      [allOf] Expected ALL of the nested rules to match, but found one failure:
+
+        1) [not] Expected nested rule to fail, but it did not:
+
+            1) [match] Matched trust anchors:
+                - bad-key
+
+      Unmatched trust anchors:
+        - bad-key
+  - description: "bad-key and bad-key2 not allowed here"
+    trustAnchors: ["dr-key", "production-key", "bad-key", "bad-key2"]
+    filePath: config/production/bad/bad2/secret.yaml
+    expectSuccess: false
+    expectedOutput: |
+      [allOf] Expected ALL of the nested rules to match, but found one failure:
+
+        1) [anyOf] Expected ANY of the nested rule to match, but none did:
+
+            1) [not] Expected nested rule to fail, but it did not:
+
+                1) [match] Matched trust anchors:
+                    - bad-key
+
+            2) [not] Expected nested rule to fail, but it did not:
+
+                1) [match] Matched trust anchors:
+                    - bad-key2
+
+      Unmatched trust anchors:
+        - bad-key
+        - bad-key2

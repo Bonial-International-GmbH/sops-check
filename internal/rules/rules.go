@@ -2,6 +2,8 @@
 // rule types together with their rule evaluation logic.
 package rules
 
+import ignore "github.com/sabhiram/go-gitignore"
+
 // Meta describes metadata common to all available rules.
 type Meta struct {
 	// Description may contain the description of the rule. If the description
@@ -11,6 +13,18 @@ type Meta struct {
 	// explains the purpose of a rule. If non-empty, it is used to enrich error
 	// messages presented to the user.
 	URL string
+	// PathMatcher matches files this rule should apply to. If nil, the rule
+	// applies to all files.
+	PathMatcher *ignore.GitIgnore
+}
+
+// MatchesPath checks if a rule should be applied to the file at path.
+func (m Meta) MatchesPath(path string) bool {
+	if m.PathMatcher == nil {
+		return true
+	}
+
+	return m.PathMatcher.MatchesPath(path)
 }
 
 // Kind represents the kind of a rule.
@@ -57,6 +71,14 @@ func (r *metaRule) Meta() Meta {
 // SetMeta sets the rule metadata.
 func (r *metaRule) SetMeta(meta Meta) {
 	r.meta = meta
+}
+
+// withMeta sets the rule metadata and returns it.
+//
+// This function is just a convenience wrapper to all chaining.
+func withMeta(rule Rule, meta Meta) Rule {
+	rule.SetMeta(meta)
+	return rule
 }
 
 // Ensure that all rule types implement the Rule interface.

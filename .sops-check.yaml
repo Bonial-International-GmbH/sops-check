@@ -2,3 +2,10 @@
 rules:
   - description: The AGE key used as part of the testdata
     match: age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw
+    paths:
+      - "*"
+      - "!demo/"
+  - description: Allow anything in the demo/ directory
+    matchRegex: ".*"
+    paths:
+      - "demo/"

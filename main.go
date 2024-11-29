@@ -136,7 +136,7 @@ func checkFiles(w io.Writer, rootRule rules.Rule, cfg *config.Config, files []so
 }
 
 func checkFile(w io.Writer, rootRule rules.Rule, file *sops.File) rules.EvalResult {
-	ctx := rules.NewEvalContext(file.ExtractKeys())
+	ctx := rules.NewEvalContext(file.Path, file.ExtractKeys())
 	result := rootRule.Eval(ctx)
 	formattedResult := result.Format()
 

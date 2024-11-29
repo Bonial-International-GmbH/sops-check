@@ -19,14 +19,16 @@ type Config struct {
 
 // Rule represents a single rule in the configuration.
 type Rule struct {
-	AllOf       []Rule `json:"allOf,omitempty"`
-	AnyOf       []Rule `json:"anyOf,omitempty"`
-	Match       string `json:"match,omitempty"`
-	MatchRegex  string `json:"matchRegex,omitempty"`
-	Not         *Rule  `json:"not,omitempty"`
-	OneOf       []Rule `json:"oneOf,omitempty"`
-	Description string `json:"description,omitempty"`
-	URL         string `json:"url,omitempty"`
+	AllOf      []Rule `json:"allOf,omitempty"`
+	AnyOf      []Rule `json:"anyOf,omitempty"`
+	Match      string `json:"match,omitempty"`
+	MatchRegex string `json:"matchRegex,omitempty"`
+	Not        *Rule  `json:"not,omitempty"`
+	OneOf      []Rule `json:"oneOf,omitempty"`
+
+	Description string   `json:"description,omitempty"`
+	URL         string   `json:"url,omitempty"`
+	Paths       []string `json:"paths,omitempty"`
 }
 
 func isURL(str string) bool {

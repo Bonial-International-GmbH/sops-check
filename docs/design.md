@@ -83,78 +83,8 @@ complex match pattern with different dependencies between each other.
 
 ### Data Model
 
-Based on the functional requirements, the [JSON schema][config-schema] for the rule
-configuration could look like this (in YAML for better readability):
-
-```yaml
----
-$schema: https://json-schema.org/draft-07/schema
-additionalProperties: false
-definitions:
-  rule:
-    additionalProperties: false
-    description: Defines a single matching rule.
-    oneOf:
-      - not:
-          required: [anyOf, match, matchRegex, not, oneOf]
-        required: [allOf]
-      - not:
-          required: [allOf, match, matchRegex, not, oneOf]
-        required: [anyOf]
-      - not:
-          required: [allOf, anyOf, matchRegex, not, oneOf]
-        required: [match]
-      - not:
-          required: [allOf, anyOf, match, not, oneOf]
-        required: [matchRegex]
-      - not:
-          required: [allOf, anyOf, match, matchRegex, oneOf]
-        required: [not]
-      - not:
-          required: [allOf, anyOf, match, matchRegex, not]
-        required: [oneOf]
-    properties:
-      allOf:
-        $ref: "#/definitions/rules"
-        description: Asserts that all of the nested rules match.
-      description:
-        description: Rule description displayed as context to the user.
-        type: string
-      anyOf:
-        $ref: "#/definitions/rules"
-        description: Asserts that at least one of the nested rules matches.
-      match:
-        description: Specifies a trust anchor that has to match exactly.
-        type: string
-      matchRegex:
-        description: Defines a regular expression to match trust anchors against.
-        type: string
-      not:
-        $ref: "#/definitions/rule"
-        description: Inverts the matching behaviour of a rule.
-      oneOf:
-        $ref: "#/definitions/rules"
-        description: Asserts that exactly one of the nested rules matches.
-      url:
-        description: URL to documentation of the rule.
-        type: string
-    type: object
-  rules:
-    items:
-      $ref: "#/definitions/rule"
-    type: array
-description: Schema of the sops-check configuration file
-properties:
-  allowUnmatched:
-    default: false
-    description: Allow SOPS files to contain trust anchors that are not matched by any rule.
-    type: boolean
-  rules:
-    $ref: "#/definitions/rules"
-    description: A list of matching rules.
-title: sops-check configuration
-type: object
-```
+The data model of the configuration file is formulated as [JSON
+schema][config-schema].
 
 This is highly influenced by the [JSON Schema Specification][jsonschema-spec]
 itself to allow for great flexibility in the rule composition.
@@ -169,8 +99,9 @@ Given the following requirements:
   - AWS KMS keys of **at least one team** owning the component. Additional team
     keys are allowed, as long as they are part of the list of approved trust
     anchors.
-  - AWS KMS keys used for deployment via CI/CD for **exactly one** target
-    environment (development/staging/production).
+  - AWS KMS keys used for deployment via CI/CD for the target environment
+    (staging/production) if the SOPS resides in the `.deploy/**/{environment}/`
+    directory.
 - AWS KMS keys **must come in pairs** of two different regions to increase availability.
 - Any excess trust anchors not matching any of these rules **must be rejected**.
 
@@ -178,34 +109,33 @@ One possible configuration to acheive this could be:
 
 ```yaml
 ---
+# All rules must match. This will automatically reject excess trust anchors
+# not matching any of the nested rules.
 rules:
-  # All rules must match. This will automatically reject excess trust anchors
-  # not matching any of the nested rules.
+  - description: Disaster recovery key must be present.
+    match: age1u79ltfzz5k79ex4mpl3r76p2532xex4mpl3z7vttctudr6gedn6ex4mpl3
+  - anyOf:
+      - allOf:
+          - match: arn:aws:kms:eu-central-1:123456789012:alias/team-foo
+          - match: arn:aws:kms:eu-west-1:123456789012:alias/team-foo
+        description: Regional keys of team-foo.
+      - allOf:
+          - match: arn:aws:kms:eu-central-1:123456789012:alias/team-bar
+          - match: arn:aws:kms:eu-west-1:123456789012:alias/team-bar
+        description: Regional keys of team-bar.
+    description: The AWS KMS key pair of at least one team must be present.
   - allOf:
-      - description: Disaster recovery key must be present.
-        match: age1u79ltfzz5k79ex4mpl3r76p2532xex4mpl3z7vttctudr6gedn6ex4mpl3
-      - anyOf:
-          - allOf:
-              - match: arn:aws:kms:eu-central-1:123456789012:alias/team-foo
-              - match: arn:aws:kms:eu-west-1:123456789012:alias/team-foo
-            description: Regional keys of team-foo.
-          - allOf:
-              - match: arn:aws:kms:eu-central-1:123456789012:alias/team-bar
-              - match: arn:aws:kms:eu-west-1:123456789012:alias/team-bar
-            description: Regional keys of team-bar.
-        description: The AWS KMS key pair of at least one team must be present.
-      - oneOf:
-          - allOf:
-              - match: arn:aws:kms:eu-central-1:123456789012:alias/production-cicd
-              - match: arn:aws:kms:eu-west-1:123456789012:alias/production-cicd
-            description: Regional production keys.
-          - allOf:
-              - match: arn:aws:kms:eu-central-1:123456789012:alias/staging-cicd
-              - match: arn:aws:kms:eu-west-1:123456789012:alias/staging-cicd
-            description: Regional staging keys.
-        description: >-
-          The AWS KMS key pair of exactly one deployment target environment
-          must be present.
+      - match: arn:aws:kms:eu-central-1:123456789012:alias/production-cicd
+      - match: arn:aws:kms:eu-west-1:123456789012:alias/production-cicd
+    description: Regional production keys.
+    paths:
+      - .deploy/**/production/
+  - allOf:
+      - match: arn:aws:kms:eu-central-1:123456789012:alias/staging-cicd
+      - match: arn:aws:kms:eu-west-1:123456789012:alias/staging-cicd
+    description: Regional staging keys.
+    paths:
+      - .deploy/**/staging/
 ```
 
 ### Output

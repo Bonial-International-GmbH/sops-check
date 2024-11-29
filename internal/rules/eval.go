@@ -5,13 +5,59 @@ import "github.com/hashicorp/go-set/v3"
 // EvalContext encapsulates data needed during rule evaluation, like the trust
 // anchors found within a given SOPS file.
 type EvalContext struct {
+	// FilePath is the relative path to the SOPS file.
+	FilePath string
 	// TrustAnchors is a set of trust anchors found in a SOPS file.
 	TrustAnchors set.Collection[string]
 }
 
-// NewEvalContext creates a new EvalContext from a list of trust anchors.
-func NewEvalContext(trustAnchors []string) *EvalContext {
-	return &EvalContext{TrustAnchors: set.From(trustAnchors)}
+// NewEvalContext creates a new EvalContext from a file path and a list of
+// trust anchors.
+func NewEvalContext(filePath string, trustAnchors []string) *EvalContext {
+	return &EvalContext{
+		FilePath:     filePath,
+		TrustAnchors: set.From(trustAnchors),
+	}
+}
+
+// filterRules takes a list of rules and only returns the rules that match the
+// file path in the EvalContext.
+func (c *EvalContext) filterRules(rules []Rule) []Rule {
+	filtered := make([]Rule, 0, len(rules))
+
+	for _, rule := range rules {
+		meta := rule.Meta()
+
+		if !meta.MatchesPath(c.FilePath) {
+			// We don't need to look into potentially nested rules here since
+			// we're discarding the rule as a whole.
+			continue
+		}
+
+		// Rules containing nested rules themselves need to be filtered recursively.
+		switch r := rule.(type) {
+		case *AllOfRule:
+			if nested := c.filterRules(r.rules); len(nested) > 0 {
+				filtered = append(filtered, withMeta(AllOf(nested...), meta))
+			}
+		case *AnyOfRule:
+			if nested := c.filterRules(r.rules); len(nested) > 0 {
+				filtered = append(filtered, withMeta(AnyOf(nested...), meta))
+			}
+		case *OneOfRule:
+			if nested := c.filterRules(r.rules); len(nested) > 0 {
+				filtered = append(filtered, withMeta(OneOf(nested...), meta))
+			}
+		case *NotRule:
+			if nested := c.filterRules([]Rule{r.rule}); len(nested) == 1 {
+				filtered = append(filtered, withMeta(Not(nested[0]), meta))
+			}
+		default:
+			filtered = append(filtered, rule)
+		}
+	}
+
+	return filtered
 }
 
 // EvalResult represents the result of a rule evaluation.
