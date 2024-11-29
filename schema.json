@@ -2,6 +2,44 @@
   "$schema": "https://json-schema.org/draft-07/schema",
   "additionalProperties": false,
   "definitions": {
+    "globalRules": {
+      "$ref": "#/definitions/rules",
+      "description": "A list of global matching rules."
+    },
+    "pathRule": {
+      "properties": {
+        "paths": {
+          "$ref": "#/definitions/paths"
+        },
+        "rules": {
+          "description": "A list of rules that only apply to files matching any of the path pattern.",
+          "$ref": "#/definitions/rules"
+        }
+      },
+      "required": ["paths", "rules"],
+      "type": "object"
+    },
+    "pathRules": {
+      "description": "A list of path based matching rules.",
+      "items": {
+        "$ref": "#/definitions/pathRule"
+      },
+      "type": "array"
+    },
+    "paths": {
+      "description": "A list of path patterns.",
+      "items": {
+        "description": "A single path pattern. Paths are specified as gitignore pattern: https://git-scm.com/docs/gitignore",
+        "examples": [
+          "!docs/",
+          "/secrets.json",
+          ".deploy/**/*.sops.yaml"
+        ],
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
     "rule": {
       "additionalProperties": false,
       "description": "Defines a single matching rule.",
@@ -91,9 +129,11 @@
       "description": "Allow SOPS files to contain trust anchors that are not matched by any rule.",
       "type": "boolean"
     },
-    "rules": {
-      "$ref": "#/definitions/rules",
-      "description": "A list of matching rules."
+    "globalRules": {
+      "$ref": "#/definitions/globalRules"
+    },
+    "pathRules": {
+      "$ref": "#/definitions/pathRules"
     }
   },
   "title": "sops-check configuration",
