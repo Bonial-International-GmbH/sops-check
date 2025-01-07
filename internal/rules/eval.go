@@ -32,6 +32,23 @@ type EvalResult struct {
 	Nested []EvalResult
 }
 
+// SarifResult converts the evaluation results to SARIF format.
+func (r *EvalResult) SarifResult(filepath string, allowUnmatched bool) SarifResult {
+	success := r.Success
+	if r.Success && r.Unmatched.Size() > 0 && !allowUnmatched {
+		success = false
+	}
+	sarifResult := SarifResult{
+		RuleID:      string(r.Rule.Kind()),
+		Evaluation:  map[bool]string{true: "none", false: "error"}[success],
+		Kind:        map[bool]string{true: "pass", false: "fail"}[success],
+		Message:     r.Format(),
+		Description: r.Rule.Meta().Description,
+		File:        filepath,
+	}
+	return sarifResult
+}
+
 // partitionNested partitions nested results into success and failure.
 func (r *EvalResult) partitionNested() (successes, failures []EvalResult) {
 	for _, result := range r.Nested {

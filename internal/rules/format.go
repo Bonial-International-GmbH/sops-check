@@ -9,6 +9,16 @@ import (
 	"github.com/hashicorp/go-set/v3"
 )
 
+// SarifResult represents a SARIF result.
+type SarifResult struct {
+	RuleID      string `json:"ruleId"`
+	Evaluation  string `json:"evaluation"`
+	Kind        string `json:"kind"`
+	Message     string `json:"message"`
+	Description string `json:"description"`
+	File        string `json:"file"`
+}
+
 // formatBuffer is a helper type for formatting EvalResults.
 type formatBuffer struct {
 	strings.Builder

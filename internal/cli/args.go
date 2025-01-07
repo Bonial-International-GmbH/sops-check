@@ -11,6 +11,8 @@ type Args struct {
 	CheckPath string
 	// ConfigPath is the path of the sops-check configuration file.
 	ConfigPath string
+	// SarifReportPath is the path where the SARIF report should be saved.
+	SarifReportPath string
 }
 
 // Defaults apply to arguments not provided explicitly.
@@ -36,6 +38,9 @@ func ParseArgs(commandLine []string) (*Args, error) {
 		Short('c').
 		Default(Defaults.ConfigPath).
 		StringVar(&args.ConfigPath)
+
+	app.Flag("sarif-report-path", "Path where the SARIF report should be created.").
+		StringVar(&args.SarifReportPath)
 
 	// Positional arguments.
 	app.Arg("path", "Directory to run the checks in. If omitted, checks are run in the current working directory.").
