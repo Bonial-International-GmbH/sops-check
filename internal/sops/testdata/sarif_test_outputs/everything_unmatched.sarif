@@ -1,0 +1,114 @@
+{
+  "version": "2.1.0",
+  "$schema": "https://raw.githubusercontent.com/oasis-tcs/sarif-spec/main/sarif-2.1/schema/sarif-schema-2.1.0.json",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "informationUri": "sops-check",
+          "name": "sops-check",
+          "rules": [
+            {
+              "id": "allOf",
+              "shortDescription": {
+                "text": ""
+              }
+            }
+          ]
+        }
+      },
+      "results": [
+        {
+          "ruleId": "allOf",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Unmatched trust anchors:\n  - age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw\n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/sops/testdata/valid_sops_files/encrypted.env"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "allOf",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Unmatched trust anchors:\n  - age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw\n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/sops/testdata/valid_sops_files/encrypted.ini"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "allOf",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Unmatched trust anchors:\n  - age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw\n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/sops/testdata/valid_sops_files/encrypted.json"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "allOf",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Unmatched trust anchors:\n  - age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw\n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/sops/testdata/valid_sops_files/encrypted.yaml"
+                }
+              }
+            }
+          ]
+        },
+        {
+          "ruleId": "allOf",
+          "ruleIndex": 0,
+          "kind": "fail",
+          "level": "error",
+          "message": {
+            "text": "Unmatched trust anchors:\n  - age1yt3tfqlfrwdwx0z0ynwplcr6qxcxfaqycuprpmy89nr83ltx74tqdpszlw\n"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "internal/sops/testdata/valid_sops_files/encrypted.yml"
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
