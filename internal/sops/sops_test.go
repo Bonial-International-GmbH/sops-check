@@ -24,7 +24,7 @@ func TestValidSopsFiles(t *testing.T) {
 	}
 
 	// Loop through files in the testdata directory.
-	files, err := FindFiles(testDir)
+	files, err := FindFiles(testDir, nil)
 	assert.NoError(t, err)
 
 	sort.Slice(files, func(i, j int) bool {
@@ -44,7 +44,7 @@ func TestInvalidSopsFiles(t *testing.T) {
 	testDir := "testdata/invalid_sops_files"
 
 	// Loop through files in the testdata directory.
-	files, err := FindFiles(testDir)
+	files, err := FindFiles(testDir, nil)
 	assert.NoError(t, err)
 	assert.Empty(t, files)
 }

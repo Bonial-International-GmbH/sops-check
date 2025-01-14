@@ -13,6 +13,7 @@ import (
 	"github.com/Bonial-International-GmbH/sops-check/internal/rules"
 	"github.com/Bonial-International-GmbH/sops-check/internal/sops"
 	"github.com/Bonial-International-GmbH/sops-check/internal/stringutils"
+	"github.com/sabhiram/go-gitignore"
 )
 
 func main() {
@@ -25,10 +26,21 @@ func main() {
 func run(w io.Writer, commandLine []string) error {
 	logger := slog.New(slog.NewTextHandler(w, nil))
 	slog.SetDefault(logger)
+	var ignoreObjects []*ignore.GitIgnore
 
 	args, err := cli.ParseArgs(commandLine)
 	if err != nil {
 		return fmt.Errorf("failed to parse flags: %w", err)
+	}
+
+	if len(args.IgnoreFilePath) > 0 {
+		for _, ignoreFile := range args.IgnoreFilePath {
+			ignoreObject, err := ignore.CompileIgnoreFile(ignoreFile)
+			if err != nil {
+				return fmt.Errorf("Failed to process ignore file %s : %w", ignoreFile, err)
+			}
+			ignoreObjects = append(ignoreObjects, ignoreObject)
+		}
 	}
 
 	cfg, err := config.Load(args.ConfigPath)
@@ -45,7 +57,7 @@ func run(w io.Writer, commandLine []string) error {
 		return fmt.Errorf("failed to compile rules: %w", err)
 	}
 
-	files, err := sops.FindFiles(args.CheckPath)
+	files, err := sops.FindFiles(args.CheckPath, ignoreObjects)
 	if err != nil {
 		return fmt.Errorf("failed to find sops files: %w", err)
 	}

@@ -11,6 +11,8 @@ type Args struct {
 	CheckPath string
 	// ConfigPath is the path of the sops-check configuration file.
 	ConfigPath string
+	// IgnoreFilePath is the path of the file containing the list of files to ignore.
+	IgnoreFilePath []string
 }
 
 // Defaults apply to arguments not provided explicitly.
@@ -36,6 +38,10 @@ func ParseArgs(commandLine []string) (*Args, error) {
 		Short('c').
 		Default(Defaults.ConfigPath).
 		StringVar(&args.ConfigPath)
+
+	app.Flag("ignore-file", "Path to the file containing files to ignore.").
+		Short('i').
+		StringsVar(&args.IgnoreFilePath)
 
 	// Positional arguments.
 	app.Arg("path", "Directory to run the checks in. If omitted, checks are run in the current working directory.").

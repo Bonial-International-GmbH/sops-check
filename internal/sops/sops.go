@@ -12,6 +12,7 @@ import (
 	"github.com/getsops/sops/v3/stores/ini"
 	"github.com/getsops/sops/v3/stores/json"
 	"github.com/getsops/sops/v3/stores/yaml"
+	"github.com/sabhiram/go-gitignore"
 )
 
 func getStore(fileType string) (sops.Store, error) {
@@ -36,7 +37,7 @@ type File struct {
 }
 
 // FindFiles searches a directory for YAML files and checks if they are valid SOPS files.
-func FindFiles(root string) ([]File, error) {
+func FindFiles(root string, ignoreObjects []*ignore.GitIgnore) ([]File, error) {
 	var sopsFiles []File
 
 	err := filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
@@ -47,6 +48,15 @@ func FindFiles(root string) ([]File, error) {
 		// Skip directories
 		if d.IsDir() {
 			return nil
+		}
+
+		// Skip files that are ignored
+		if len(ignoreObjects) > 0 {
+			for _, ignoreObject := range ignoreObjects {
+				if ignoreObject.MatchesPath(path) {
+					return nil
+				}
+			}
 		}
 
 		ext := filepath.Ext(d.Name())
