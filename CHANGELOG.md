@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.1.0...v0.2.0) (2025-02-04)
+
+
+### Features
+
+* Adds an option to display the results in a SARIF format ([#39](https://github.com/Bonial-International-GmbH/sops-check/issues/39)) ([5eec368](https://github.com/Bonial-International-GmbH/sops-check/commit/5eec36874146a29cf35296c096b107c308f4ec07))
+
+
+### Bug Fixes
+
+* **release:** always push image on main ([#25](https://github.com/Bonial-International-GmbH/sops-check/issues/25)) ([ef104e5](https://github.com/Bonial-International-GmbH/sops-check/commit/ef104e514199fe81c582c3d6b91c8b1d5a440e17))
+* **release:** check for `release_created == 'true'` ([#32](https://github.com/Bonial-International-GmbH/sops-check/issues/32)) ([2fdb1cd](https://github.com/Bonial-International-GmbH/sops-check/commit/2fdb1cd97508d5a489dae120d86e5a0915a8cfe3))
+
 ## 0.1.0 (2024-11-29)
 
 
