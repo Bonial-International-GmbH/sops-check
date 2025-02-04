@@ -54,8 +54,9 @@ func TestGetKeys(t *testing.T) {
 	dummyRole := "dummy-role"
 	dummyEncryptionContext := map[string]*string{"foo": aws.String("bar")}
 
-	age, err := age.MasterKeyFromRecipient("age1lzd99uklcjnc0e7d860axevet2cz99ce9pq6tzuzd05l5nr28ams36nvun")
-	kms := kms.NewMasterKey(dummyArn, dummyRole, dummyEncryptionContext)
+	ageKey, err := age.MasterKeyFromRecipient("age1lzd99uklcjnc0e7d860axevet2cz99ce9pq6tzuzd05l5nr28ams36nvun")
+	kmsKey := kms.NewMasterKey(dummyArn, "", nil)
+	kmsKeyWithRoleAndContext := kms.NewMasterKey(dummyArn, dummyRole, dummyEncryptionContext)
 	assert.NoError(t, err)
 
 	tests := []struct {
@@ -72,16 +73,23 @@ func TestGetKeys(t *testing.T) {
 			name: "Single Key",
 			sopsfiles: File{Path: "single/key", Metadata: sops.Metadata{
 				KeyGroups: []sops.KeyGroup{
-					[]keys.MasterKey{age}}}},
+					[]keys.MasterKey{ageKey},
+				},
+			}},
 			expected: []string{"age1lzd99uklcjnc0e7d860axevet2cz99ce9pq6tzuzd05l5nr28ams36nvun"},
 		},
 		{
-			name: "Two Keys",
-			sopsfiles: File{Path: "two/keys", Metadata: sops.Metadata{
+			name: "Multiple Keys",
+			sopsfiles: File{Path: "Multiple/keys", Metadata: sops.Metadata{
 				KeyGroups: []sops.KeyGroup{
-					[]keys.MasterKey{age, kms}}}},
-			expected: []string{"age1lzd99uklcjnc0e7d860axevet2cz99ce9pq6tzuzd05l5nr28ams36nvun",
-				"arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"},
+					[]keys.MasterKey{ageKey, kmsKey, kmsKeyWithRoleAndContext},
+				},
+			}},
+			expected: []string{
+				"age1lzd99uklcjnc0e7d860axevet2cz99ce9pq6tzuzd05l5nr28ams36nvun",
+				"arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab",
+				"arn:aws:kms:us-east-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab+dummy-role|foo:bar",
+			},
 		},
 	}
 
