@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.2.0...v0.3.0) (2025-02-10)
+
+
+### Features
+
+* add support for ignorefiles via the -i flag ([6ffdfb3](https://github.com/Bonial-International-GmbH/sops-check/commit/6ffdfb3a246ded0d683af6d3126d22ac3c1cc4a0))
+
 ## [0.2.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.1.0...v0.2.0) (2025-02-04)
 
 
