@@ -36,7 +36,7 @@ func ParseArgs(commandLine []string) (*Args, error) {
 
 	// Flags.
 	app.HelpFlag.Short('h')
-	app.Flag("config", "Path to the sops-check configuration file.").
+	app.Flag("config", "Path to the sops-check configuration file. Can be a local file or valid URL.").
 		Short('c').
 		Default(Defaults.ConfigPath).
 		StringVar(&args.ConfigPath)

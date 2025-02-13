@@ -131,7 +131,7 @@ func TestRun(t *testing.T) {
 	t.Run("nonexistent config file", func(t *testing.T) {
 		_, err := runWithConfig(t, nil)
 		require.Error(t, err)
-		assert.Regexp(t, "config file \".*\" not found", err.Error())
+		assert.Regexp(t, "config file .* not found", err.Error())
 	})
 }
 

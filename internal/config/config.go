@@ -4,6 +4,8 @@ package config
 import (
 	"fmt"
 	"io"
+	"net/http"
+	"net/url"
 	"os"
 
 	"github.com/goccy/go-yaml"
@@ -27,8 +29,25 @@ type Rule struct {
 	URL         string `json:"url,omitempty"`
 }
 
-// Load loads the configuration from a JSON file.
-func Load(filePath string) (*Config, error) {
+func isURL(str string) bool {
+	u, err := url.Parse(str)
+	return err == nil && u.Scheme != "" && u.Host != ""
+}
+
+// Load loads the configuration from a remote URL.
+func LoadURL(url string) (*Config, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("failed to fetch config from URL %q: %v", url, err)
+	}
+
+	defer resp.Body.Close()
+
+	return LoadReader(resp.Body)
+}
+
+// LoadFile loads the configuration from a local file.
+func LoadFile(filePath string) (*Config, error) {
 	file, err := os.Open(filePath)
 	if err != nil {
 		return nil, err
@@ -36,6 +55,14 @@ func Load(filePath string) (*Config, error) {
 	defer file.Close()
 
 	return LoadReader(file)
+}
+
+// Load loads the configuration from the given path, which can be a URL or a local file path.
+func Load(path string) (*Config, error) {
+	if isURL(path) {
+		return LoadURL(path)
+	}
+	return LoadFile(path)
 }
 
 // LoadReader loads the configuration from an io.Reader.
