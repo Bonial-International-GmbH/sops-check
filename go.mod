@@ -6,7 +6,7 @@ toolchain go1.23.3
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
-	github.com/aws/aws-sdk-go-v2 v1.36.0
+	github.com/aws/aws-sdk-go-v2 v1.36.3
 	github.com/getsops/sops/v3 v3.9.4
 	github.com/goccy/go-yaml v1.15.17
 	github.com/hashicorp/go-set/v3 v3.0.0
