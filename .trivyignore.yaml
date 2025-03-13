@@ -1,3 +1,4 @@
+---
 misconfigurations:
   - id: AVD-DS-0026
     statement: The HEALTHCHECK instruction is meaningless in a Kubernetes context.

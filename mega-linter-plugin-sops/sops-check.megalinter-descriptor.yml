@@ -1,0 +1,33 @@
+---
+descriptor_id: SOPS
+descriptor_type: "tooling_format"
+descriptor_flavors:
+  - security
+linters:
+  - name: SOPS_CHECK
+    linter_name: sops-check
+    linter_url: https://github.com/Bonial-International-GmbH/sops-check/
+    linter_repo: https://github.com/Bonial-International-GmbH/sops-check/
+    can_output_sarif: true
+    cli_executable: "sops-check"
+    cli_config_arg_name: "--config"
+    cli_lint_mode: "project"
+    cli_help_arg_name: "--help"
+    cli_version_arg_name: "--version"
+    config_file_name: ".sops-check.yaml"
+    cli_executable_version: "latest"
+    file_extensions:
+      - ".yaml"
+      - ".yml"
+      - ".json"
+      - ".env"
+      - ".ini"
+    examples:
+      - "sops-check --config .sops-check.yaml"
+      - "sops-check --help"
+      - "sops-check --sarif-report-path=<PATH>"
+    install:
+      dockerfile:
+        - RUN curl -SsL https://github.com/Bonial-International-GmbH/sops-check/releases/latest/download/sops-check_linux_amd64 -o sops-check \
+              && chmod +x sops-check \
+              && mv sops-check /usr/local/bin

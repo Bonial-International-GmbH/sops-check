@@ -1,3 +1,4 @@
+---
 site_name: sops-check
 site_description: |
   Tool that looks for SOPS files in a repository
