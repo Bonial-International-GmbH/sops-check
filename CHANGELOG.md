@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.3.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.2.0...v0.3.0) (2025-03-13)
+
+
+### Features
+
+* add megalinter plugin descriptor ([#56](https://github.com/Bonial-International-GmbH/sops-check/issues/56)) ([64d8814](https://github.com/Bonial-International-GmbH/sops-check/commit/64d8814b1d97f759b113d2cd66514ebb9f789869))
+* add support for ignorefiles via the -i flag ([74f3621](https://github.com/Bonial-International-GmbH/sops-check/commit/74f3621b0d203d920e16be3e5b21e29af687a30e))
+* add support for ignorefiles via the -i flag ([6ffdfb3](https://github.com/Bonial-International-GmbH/sops-check/commit/6ffdfb3a246ded0d683af6d3126d22ac3c1cc4a0))
+* config can be remote URL ([#53](https://github.com/Bonial-International-GmbH/sops-check/issues/53)) ([33f9479](https://github.com/Bonial-International-GmbH/sops-check/commit/33f9479192a107c1d4498f1dd486a6ac538fe7c3))
+
 ## [0.2.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.1.0...v0.2.0) (2025-02-04)
 
 
