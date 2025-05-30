@@ -145,7 +145,7 @@ func runWithConfig(t *testing.T, cfg *config.Config, sarifReportPath ...string) 
 	}
 
 	var sb strings.Builder
-	args := []string{"--config", configPath}
+	args := []string{"--config", configPath, "--ignore-file", ".tests-ignore"}
 
 	if len(sarifReportPath) > 0 {
 		args = append(args, "--sarif-report-path", sarifReportPath[0])
