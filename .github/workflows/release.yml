@@ -11,6 +11,7 @@ permissions: read-all
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'Bonial-International-GmbH' }}
     permissions:
       contents: write
       pull-requests: write
@@ -25,6 +26,7 @@ jobs:
   publish-image:
     needs: release-please
     runs-on: ubuntu-latest
+    if: ${{ github.repository_owner == 'Bonial-International-GmbH' }}
     permissions:
       packages: write
       contents: read
@@ -67,7 +69,7 @@ jobs:
 
   publish-binaries:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ github.repository_owner == 'Bonial-International-GmbH' && needs.release-please.outputs.release_created }}
     runs-on: ubuntu-latest
     permissions:
       contents: write
