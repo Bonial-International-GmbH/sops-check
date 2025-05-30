@@ -29,5 +29,5 @@ linters:
     install:
       dockerfile:
         - RUN curl -SsL https://github.com/Bonial-International-GmbH/sops-check/releases/latest/download/sops-check_linux_amd64 -o sops-check \
-              && chmod +x sops-check \
-              && mv sops-check /usr/local/bin
+          && chmod +x sops-check \
+          && mv sops-check /usr/local/bin

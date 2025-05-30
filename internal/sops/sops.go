@@ -26,7 +26,7 @@ func getStore(fileType string) (sops.Store, error) {
 	case ".json":
 		return &json.Store{}, nil
 	default:
-		return nil, fmt.Errorf("Unsupported file type: %s", fileType)
+		return nil, fmt.Errorf("unsupported file type: %s", fileType)
 	}
 }
 

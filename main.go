@@ -37,7 +37,7 @@ func run(w io.Writer, commandLine []string) error {
 	for _, ignoreFile := range args.IgnoreFilePath {
 		ignoreObject, err := ignore.CompileIgnoreFile(ignoreFile)
 		if err != nil {
-			return fmt.Errorf("Failed to process ignore file %s : %w", ignoreFile, err)
+			return fmt.Errorf("failed to process ignore file %s : %w", ignoreFile, err)
 		}
 		ignoreObjects = append(ignoreObjects, ignoreObject)
 	}
@@ -119,7 +119,7 @@ func checkFiles(w io.Writer, rootRule rules.Rule, cfg *config.Config, files []so
 		run := sarifRun(results)
 		report.AddRun(run)
 		if err := report.WriteFile(args.SarifReportPath); err != nil {
-			return fmt.Errorf("Could not write the report to %s: %w", args.SarifReportPath, err)
+			return fmt.Errorf("could not write the report to %s: %w", args.SarifReportPath, err)
 		}
 	}
 
@@ -129,7 +129,7 @@ func checkFiles(w io.Writer, rootRule rules.Rule, cfg *config.Config, files []so
 		for _, file := range problematicFiles {
 			fmt.Fprintf(&sb, "\n  - %s", file)
 		}
-		return fmt.Errorf("Found %d files with issues:%s", len(problematicFiles), sb.String())
+		return fmt.Errorf("found %d files with issues:%s", len(problematicFiles), sb.String())
 	}
 
 	return nil
