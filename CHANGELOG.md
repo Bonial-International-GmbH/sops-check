@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.1](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.3.0...v0.3.1) (2025-06-02)
+
+
+### Bug Fixes
+
+* **ci:** don't release on forks ([#64](https://github.com/Bonial-International-GmbH/sops-check/issues/64)) ([e6bdc9f](https://github.com/Bonial-International-GmbH/sops-check/commit/e6bdc9fa8f4f6d0bf1257a9a549af438be8b9e72))
+
 ## [0.3.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.2.0...v0.3.0) (2025-03-13)
 
 
