@@ -1,0 +1,20 @@
+sops:
+  kms:
+    - arn: arn:aws:kms:eu-central-1:123456789012:alias/staging-cicd
+      created_at: "2024-03-20T10:00:00Z"
+      enc: AQICAHjX...
+    - arn: arn:aws:kms:eu-west-1:123456789012:alias/staging-cicd
+      created_at: "2024-03-20T10:00:00Z"
+      enc: AQICAHjX...
+  age:
+    - recipient: age1u79ltfzz5k79ex4mpl3r76p2532xex4mpl3z7vttctudr6gedn6ex4mpl3
+      created_at: "2024-03-20T10:00:00Z"
+      enc: age-encryption-...
+  lastmodified: "2024-03-20T10:00:00Z"
+  mac: ENC[AES256_GCM,data:...]
+  pgp: []
+  unencrypted_suffix: _unencrypted
+  version: 3.7.3
+api_keys:
+  whatever: sk_test_123456789
+  something: hfiwufzr423789fhiwsudfhz98732iuhfb

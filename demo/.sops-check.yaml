@@ -1,0 +1,53 @@
+# Global settings
+allowUnmatched: false  # Reject any trust anchors not explicitly allowed by rules
+
+rules:
+  # All rules must match
+  - allOf:
+      # Disaster recovery key must be present in all files
+      - description: "Disaster recovery AGE key must be present in all files"
+        match: "age1u79ltfzz5k79ex4mpl3r76p2532xex4mpl3z7vttctudr6gedn6ex4mpl3"
+        url: "https://internal-wiki/security/disaster-recovery"
+
+      # Environment-specific rules
+      - anyOf:
+          # Production rules
+          - allOf:
+              - description: "Production files must use production KMS keys in both regions"
+                matchRegex: "^arn:aws:kms:eu-(central|west)-1:123456789012:alias/production-cicd$"
+              - not:
+                  description: "Production files must not use staging or development keys"
+                  anyOf:
+                    - matchRegex: "^arn:aws:kms:.*:alias/staging-cicd$"
+                    - matchRegex: "^arn:aws:kms:.*:alias/development-cicd$"
+            description: "Production environment rules"
+            url: "https://internal-wiki/security/production-keys"
+
+          # Staging rules
+          - allOf:
+              - description: "Staging files must use staging KMS keys in both regions"
+                matchRegex: "^arn:aws:kms:eu-(central|west)-1:123456789012:alias/staging-cicd$"
+              - not:
+                  description: "Staging files must not use production or development keys"
+                  anyOf:
+                    - matchRegex: "^arn:aws:kms:.*:alias/production-cicd$"
+                    - matchRegex: "^arn:aws:kms:.*:alias/development-cicd$"
+            description: "Staging environment rules"
+            url: "https://internal-wiki/security/staging-keys"
+
+          # Development rules
+          - allOf:
+              - description: "Development files must use development KMS keys in both regions"
+                matchRegex: "^arn:aws:kms:eu-(central|west)-1:123456789012:alias/development-cicd$"
+              - not:
+                  description: "Development files must not use production or staging keys"
+                  anyOf:
+                    - matchRegex: "^arn:aws:kms:.*:alias/production-cicd$"
+                    - matchRegex: "^arn:aws:kms:.*:alias/development-cicd$"
+            description: "Development environment rules"
+            url: "https://internal-wiki/security/development-keys"
+
+      # Only allow KMS keys from allowed regions, account, and alias pattern
+      - matchRegex: "^arn:aws:kms:eu-(central|west)-1:123456789012:alias/(production|staging|development)-cicd$"
+        description: "Only allow KMS keys from eu-central-1 or eu-west-1, account 123456789012, and alias ending with -cicd"
+        url: "https://internal-wiki/security/authorized-regions"

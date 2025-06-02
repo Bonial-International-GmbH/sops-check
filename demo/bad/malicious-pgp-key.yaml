@@ -1,0 +1,12 @@
+sops:
+  pgp:
+    - fp: "1234567890ABCDEF1234567890ABCDEF12345678" # Malicious user's PGP key
+      created_at: "2024-06-01T12:00:00Z"
+      enc: "encrypted-payload"
+  age:
+    - recipient: "age1u79ltfzz5k79ex4mpl3r76p2532xex4mpl3z7vttctudr6gedn6ex4mpl3"
+      enc: "encrypted-payload"
+      created_at: "2024-06-01T12:00:00Z"
+  lastmodified: "2024-06-01T12:00:00Z"
+  mac: "mac-placeholder"
+  version: 3.7.3
