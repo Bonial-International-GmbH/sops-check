@@ -18,7 +18,7 @@ func (*OneOfRule) Kind() Kind {
 
 // Eval implements Rule.
 func (r *OneOfRule) Eval(ctx *EvalContext) EvalResult {
-	result := evalRules(ctx, r.rules)
+	result := evalRules(ctx, ctx.filterRules(r.rules))
 
 	return EvalResult{
 		Rule:      r,

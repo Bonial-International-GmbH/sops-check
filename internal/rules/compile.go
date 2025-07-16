@@ -5,6 +5,7 @@ import (
 	"regexp"
 
 	"github.com/Bonial-International-GmbH/sops-check/internal/config"
+	ignore "github.com/sabhiram/go-gitignore"
 )
 
 // Compile takes a slice of rule configurations and compiles it into a single
@@ -39,9 +40,15 @@ func compileRule(config config.Rule) (Rule, error) {
 		return nil, err
 	}
 
+	var pathMatcher *ignore.GitIgnore
+	if len(config.Paths) > 0 {
+		pathMatcher = ignore.CompileIgnoreLines(config.Paths...)
+	}
+
 	compiled.SetMeta(Meta{
 		Description: config.Description,
 		URL:         config.URL,
+		PathMatcher: pathMatcher,
 	})
 
 	return compiled, nil

@@ -18,11 +18,12 @@ func (*AllOfRule) Kind() Kind {
 
 // Eval implements Rule.
 func (r *AllOfRule) Eval(ctx *EvalContext) EvalResult {
-	result := evalRules(ctx, r.rules)
+	rules := ctx.filterRules(r.rules)
+	result := evalRules(ctx, rules)
 
 	return EvalResult{
 		Rule:      r,
-		Success:   result.successCount == len(r.rules),
+		Success:   result.successCount == len(rules),
 		Matched:   result.matched,
 		Unmatched: ctx.TrustAnchors.Difference(result.matched),
 		Nested:    result.results,

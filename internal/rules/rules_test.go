@@ -23,6 +23,7 @@ type testConfig struct {
 
 type testCase struct {
 	Description    string   `json:"description"`
+	FilePath       string   `json:"filePath"`
 	TrustAnchors   []string `json:"trustAnchors"`
 	ExpectSuccess  bool     `json:"expectSuccess"`
 	ExpectedOutput string   `json:"expectedOutput"`
@@ -79,7 +80,7 @@ func TestUI(t *testing.T) {
 			name := fmt.Sprintf("%s-%d", filepath.Base(path), i)
 
 			t.Run(name, func(t *testing.T) {
-				ctx := rules.NewEvalContext(testCase.TrustAnchors)
+				ctx := rules.NewEvalContext(testCase.FilePath, testCase.TrustAnchors)
 				result := rootRule.Eval(ctx)
 
 				assert.Equal(t, testCase.ExpectSuccess, result.Success)
