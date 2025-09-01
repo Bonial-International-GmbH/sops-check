@@ -12,7 +12,7 @@ require (
 	github.com/hashicorp/go-set/v3 v3.0.1
 	github.com/owenrumney/go-sarif/v2 v2.3.3
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
-	github.com/stretchr/testify v1.10.0
+	github.com/stretchr/testify v1.11.1
 )
 
 require (
