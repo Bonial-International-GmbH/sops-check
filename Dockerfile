@@ -17,7 +17,7 @@ COPY internal internal/
 
 RUN make build
 
-FROM alpine:3.20
+FROM alpine:3.22
 
 RUN apk --update --no-cache add ca-certificates
 
