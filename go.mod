@@ -8,7 +8,7 @@ require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
 	github.com/aws/aws-sdk-go-v2 v1.39.0
 	github.com/getsops/sops/v3 v3.10.2
-	github.com/goccy/go-yaml v1.18.0
+	github.com/goccy/go-yaml v1.19.2
 	github.com/hashicorp/go-set/v3 v3.0.1
 	github.com/owenrumney/go-sarif/v2 v2.3.3
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
