@@ -24,7 +24,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: MegaLinter
         uses: oxsecurity/megalinter/flavors/go@v8.8.0
@@ -35,7 +35,7 @@ jobs:
 
       - name: Archive production artifacts
         if: success() || failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: MegaLinter reports
           path: |
