@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.4.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.3.0...v0.4.0) (2026-02-12)
+
+
+### Features
+
+* add support for path-based rules ([#69](https://github.com/Bonial-International-GmbH/sops-check/issues/69)) ([52d4fd9](https://github.com/Bonial-International-GmbH/sops-check/commit/52d4fd96576c76ea0fe171fbab72cf5b7c691b19))
+
+
+### Bug Fixes
+
+* bump github.com/cloudflare/circl to v1.6.1 ([#70](https://github.com/Bonial-International-GmbH/sops-check/issues/70)) ([cdb1658](https://github.com/Bonial-International-GmbH/sops-check/commit/cdb165880ef136c3c35f85a68fbb901dab9e8dd0))
+* **ci:** don't release on forks ([#64](https://github.com/Bonial-International-GmbH/sops-check/issues/64)) ([e6bdc9f](https://github.com/Bonial-International-GmbH/sops-check/commit/e6bdc9fa8f4f6d0bf1257a9a549af438be8b9e72))
+
 ## [0.3.0](https://github.com/Bonial-International-GmbH/sops-check/compare/v0.2.0...v0.3.0) (2025-03-13)
 
 
