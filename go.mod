@@ -1,6 +1,6 @@
 module github.com/Bonial-International-GmbH/sops-check
 
-go 1.24.11
+go 1.25.0
 
 require (
 	github.com/alecthomas/kingpin/v2 v2.4.0
@@ -12,6 +12,8 @@ require (
 	github.com/sabhiram/go-gitignore v0.0.0-20210923224102-525f6e181f06
 	github.com/stretchr/testify v1.11.1
 )
+
+replace github.com/opencontainers/runc v1.2.6 => github.com/opencontainers/runc v1.3.4
 
 require (
 	cel.dev/expr v0.25.1 // indirect
